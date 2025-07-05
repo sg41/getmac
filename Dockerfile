@@ -10,4 +10,5 @@ FROM ubuntu:latest
 
 COPY --from=build /usr/src/myapp/getmac /usr/local/bin
 
-ENTRYPOINT ["getmac"]
+ENTRYPOINT ["/usr/local/bin/getmac"]
+CMD ["127.0.0.1"]
