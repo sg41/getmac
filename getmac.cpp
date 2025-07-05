@@ -7,9 +7,9 @@ int main(int argc, char* argv[]) {
   }
 
   unsigned char mac[6];
-  ICMPMacResolver resolver;
+  ICMPMacResolver resolver(argv[1]);
 
-  if (!resolver.get_mac(argv[1], mac)) {
+  if (!resolver.get_mac(mac)) {
     std::fprintf(stderr, "Failed to get MAC address\n");
     return EXIT_FAILURE;
   }

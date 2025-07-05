@@ -1,4 +1,4 @@
-FROM gcc:latest as build
+FROM gcc:latest AS build
 
 COPY . /usr/src/myapp
 
@@ -6,8 +6,8 @@ WORKDIR /usr/src/myapp
 
 RUN make
 
-from alpine:latest
+FROM ubuntu:latest
 
-COPY --from=build /usr/src/myapp/getmac /usr/local/bin/getmac
+COPY --from=build /usr/src/myapp/getmac /usr/local/bin
 
 ENTRYPOINT ["getmac"]

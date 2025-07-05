@@ -5,20 +5,9 @@
 
 #include "icmp_mac_resolver.h"  // Assuming your class is in this header
 
-// Mock test for checksum calculation
-void test_checksum_calculation() {
-  ICMPMacResolver resolver;
-  unsigned short test_data[] = {0x4500, 0x0036, 0x0000, 0x4000, 0x4001};
-  unsigned short result = resolver.checksum(test_data, sizeof(test_data));
-
-  std::cout << "Checksum test: ";
-  assert(result == 0xb861);  // Known good checksum for this data
-  std::cout << "PASSED\n";
-}
-
 // Test socket initialization
 void test_socket_initialization() {
-  ICMPMacResolver resolver;
+  ICMPMacResolver resolver("127.0.0.1");
 
   std::cout << "Socket initialization test: ";
   // Should fail if not run as root
@@ -29,12 +18,12 @@ void test_socket_initialization() {
 
 // Test for valid IP address handling
 void test_valid_ip_address() {
-  ICMPMacResolver resolver;
+  ICMPMacResolver resolver("127.0.0.1");
   unsigned char mac[6];
 
   std::cout << "Valid IP test: ";
   // Test with localhost (may not get MAC but should handle properly)
-  bool result = resolver.get_mac("127.0.0.1", mac);
+  bool result = resolver.get_mac(mac);
   // Either succeeds or fails gracefully
   assert(result == true || result == false);
   std::cout << "PASSED\n";
@@ -42,17 +31,17 @@ void test_valid_ip_address() {
 
 // Test for invalid IP address handling
 void test_invalid_ip_address() {
-  ICMPMacResolver resolver;
+  ICMPMacResolver resolver("INVALID_IP_ADDRESS");
   unsigned char mac[6];
 
   std::cout << "Invalid IP test: ";
-  assert(resolver.get_mac("invalid.ip.address", mac) == false);
+  assert(resolver.get_mac(mac) == false);
   std::cout << "PASSED\n";
 }
 
 // Test response validation logic
 void test_response_validation() {
-  ICMPMacResolver resolver;
+  ICMPMacResolver resolver("192.168.1.1");
   unsigned char mac[6];
   char fake_packet[1024];
 
@@ -82,7 +71,6 @@ void test_response_validation() {
 int main() {
   std::cout << "Running ICMPMacResolver tests...\n";
 
-  //   test_checksum_calculation();
   test_socket_initialization();
   test_valid_ip_address();
   test_invalid_ip_address();
