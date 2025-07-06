@@ -18,6 +18,7 @@
 #include <iostream>
 
 #define MAX_PACKETS 200
+#define DEFAULT_INTERFACE "enp3s0"
 class ICMPMacResolver {
  public:
   friend void test_checksum_calculation();
@@ -41,21 +42,6 @@ class ICMPMacResolver {
   int recv_sock;
   int send_sock;
   std::string target_ip_;
-
-  //   unsigned short checksum(void* b, int len) {
-  //     unsigned short* buf = static_cast<unsigned short*>(b);
-  //     unsigned int sum = 0;
-
-  //     for (sum = 0; len > 1; len -= 2) {
-  //       sum += *buf++;
-  //     }
-  //     if (len == 1) {
-  //       sum += *(unsigned char*)buf;
-  //     }
-  //     sum = (sum >> 16) + (sum & 0xFFFF);
-  //     sum += (sum >> 16);
-  //     return static_cast<unsigned short>(~sum);
-  //   }
 
   unsigned short checksum(void* b, int len) {
     unsigned short* buf = static_cast<unsigned short*>(b);
@@ -169,7 +155,7 @@ class ICMPMacResolver {
 
     if (getifaddrs(&ifaddr) == -1) {
       perror("getifaddrs");
-      return "eth0";  // fallback
+      return DEFAULT_INTERFACE;  // fallback
     }
 
     for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
@@ -186,7 +172,7 @@ class ICMPMacResolver {
     }
 
     freeifaddrs(ifaddr);
-    return best_interface.empty() ? "eth0" : best_interface;
+    return best_interface.empty() ? DEFAULT_INTERFACE : best_interface;
   }
 
   bool receive_icmp_reply(unsigned char* mac, const char* target_ip) {
