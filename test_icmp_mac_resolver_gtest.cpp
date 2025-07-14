@@ -34,6 +34,14 @@ TEST_F(ICMPMacResolverTest, LiveICMPTest) {
   EXPECT_TRUE(non_zero);
 }
 
+// Integration test - requires network and root privileges
+TEST_F(ICMPMacResolverTest, UnusedIPTest) {
+  ICMPMacResolver* real_resolver =
+      new ICMPMacResolver("192.168.168.168");  // Unused IP
+  unsigned char mac[6];
+  EXPECT_FALSE(real_resolver->get_mac(mac));
+}
+
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

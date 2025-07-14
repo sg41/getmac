@@ -24,14 +24,14 @@ COVERAGE_DIR = coverage
 
 build_with_coverage: CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
 build_with_coverage: LDFLAGS += --coverage
-build_with_coverage: clean test_icmp_mac_resolver
+build_with_coverage: clean test test_icmp_mac_resolver
+	$(SUDO) ./test_icmp
 	$(SUDO) ./test_icmp_mac_resolver
-
 
 coverage: build_with_coverage
 	mkdir -p ${COVERAGE_DIR}
 	lcov --capture --directory . --output-file ${COVERAGE_DIR}/coverage.info
-	lcov --remove ${COVERAGE_DIR}/coverage.info '/usr/*' '*/gtest/*' --output-file ${COVERAGE_DIR}/filtered.info
+	lcov --remove ${COVERAGE_DIR}/coverage.info '/usr/*' '*/gtest/*' '*/test_*' --output-file ${COVERAGE_DIR}/filtered.info
 	genhtml ${COVERAGE_DIR}/filtered.info --output-directory ${COVERAGE_DIR}/html
 	gcovr --xml-pretty --output ${COVERAGE_DIR}/coverage.xml
 	echo "Coverage report available at ${COVERAGE_DIR}/html/index.html"

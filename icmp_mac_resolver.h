@@ -19,6 +19,8 @@
 
 #define MAX_PACKETS 200
 #define DEFAULT_INTERFACE "enp3s0"
+#define TIMEOUT 2
+
 class ICMPMacResolver {
  public:
   friend void test_checksum_calculation();
@@ -87,7 +89,7 @@ class ICMPMacResolver {
 
     // Set timeout
     struct timeval tv;
-    tv.tv_sec = 2;
+    tv.tv_sec = TIMEOUT;
     tv.tv_usec = 0;
     if (setsockopt(recv_sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < 0) {
       perror("setsockopt SO_RCVTIMEO");
@@ -106,7 +108,7 @@ class ICMPMacResolver {
 
     // Set send timeout (2 seconds)
     struct timeval tv;
-    tv.tv_sec = 2;
+    tv.tv_sec = TIMEOUT;
     tv.tv_usec = 0;
     if (setsockopt(send_sock, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) < 0) {
       perror("setsockopt SO_SNDTIMEO");
