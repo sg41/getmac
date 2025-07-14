@@ -1,5 +1,5 @@
 
-# ICMP MAC Address Resolver
+# getmac - ICMP MAC Address Resolver
 
 A lightweight utility to discover MAC addresses by sending ICMP echo requests.
 
