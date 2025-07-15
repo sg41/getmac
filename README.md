@@ -79,4 +79,4 @@ make test
 - Falls back to `eth0` if auto-detection fails
 
 ## License
-[Unlicense](https://unlicense.org/) – Public Domain
+[MIT](LICENSE)
